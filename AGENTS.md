@@ -1,9 +1,4 @@
 <!-- BEGIN:nextjs-agent-rules -->
 
-## This is NOT the Next.js you know
-
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
-
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
-
+use this for the reference: https://www.airbnb.co.in/rooms/1729476134054893611?check_in=2026-10-28&photo_id=2729979590&source_impression_id=p3_06f95176-549d-46eb-a7f0-2825568e9c31_1729476134054893611_1&previous_page_section_name=1000&guests=1&adults=1&pets=1&check_out=2026-10-29
 <!-- END:nextjs-agent-rules -->
