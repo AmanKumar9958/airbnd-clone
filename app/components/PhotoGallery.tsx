@@ -15,25 +15,25 @@ export default function PhotoGallery({
   onOpenModal,
 }: PhotoGalleryProps) {
   // Exact 5 photos from the user's reference screenshot:
+  // Slot 1 (Left 2 cols): Living room daytime
   const photoLeft =
-    photos.find((p) => p.url.includes("26f90a0b"))?.url ||
     "https://a0.muscache.com/im/pictures/hosting/Hosting-1729476134054893611/original/26f90a0b-929e-44a3-b7d2-739f2891c02c.jpeg";
 
+  // Slot 2 (Top-Middle): Daytime living room & bed overview
   const photoTopMiddle =
-    photos.find((p) => p.url.includes("57d18950"))?.url ||
-    "https://a0.muscache.com/im/pictures/hosting/Hosting-1729476134054893611/original/57d18950-58b9-4c58-8aff-ffdc5b73673d.jpeg";
-
-  const photoBottomMiddle =
-    photos.find((p) => p.url.includes("34b2ffd4"))?.url ||
-    "https://a0.muscache.com/im/pictures/hosting/Hosting-1729476134054893611/original/34b2ffd4-7480-40e2-a66b-619daf5c506a.jpeg";
-
-  const photoTopRight =
-    photos.find((p) => p.url.includes("fffd8e76"))?.url ||
-    "https://a0.muscache.com/im/pictures/hosting/Hosting-1729476134054893611/original/fffd8e76-04a8-4cee-89df-b490d6e29b85.jpeg";
-
-  const photoBottomRight =
-    photos.find((p) => p.url.includes("810da56f"))?.url ||
     "https://a0.muscache.com/im/pictures/hosting/Hosting-1729476134054893611/original/810da56f-7ce4-4b78-be65-4aee1be5c16c.jpeg";
+
+  // Slot 3 (Bottom-Middle): TV console with 'AURA HOUSE' on screen
+  const photoBottomMiddle =
+    "https://a0.muscache.com/im/pictures/hosting/Hosting-1729476134054893611/original/7775ef82-b7b5-4c9a-b36e-8973cb1fe276.jpeg";
+
+  // Slot 4 (Top-Right): Balcony at night with round wicker chair and wine glasses
+  const photoTopRight =
+    "https://a0.muscache.com/im/pictures/hosting/Hosting-1729476134054893611/original/cad63bf7-aaeb-43b6-92c3-b0253eca42bf.jpeg";
+
+  // Slot 5 (Bottom-Right): Master bedroom with glowing headboard & basket
+  const photoBottomRight =
+    "https://a0.muscache.com/im/pictures/hosting/Hosting-1729476134054893611/original/fffd8e76-04a8-4cee-89df-b490d6e29b85.jpeg";
 
   return (
     <section className="relative rounded-2xl overflow-hidden mt-3 sm:mt-4">

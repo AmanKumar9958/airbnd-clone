@@ -5,7 +5,7 @@ import { Search, CircleUserRound, Menu } from "lucide-react";
 
 export default function Header() {
   return (
-    <header className="bg-white border-b border-[#EBEBEB] w-full px-6 md:px-10 md:py-2">
+    <header className="bg-white border-b-2 border-[#ebebeb] w-full px-6 md:px-10 md:py-2">
       <div className="relative w-full h-20 flex items-center justify-between">
         {/* Left: Airbnb Brand Logo */}
         <div className="flex items-center">

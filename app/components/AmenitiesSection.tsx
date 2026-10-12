@@ -50,7 +50,7 @@ export default function AmenitiesSection({ onOpenModal }: AmenitiesSectionProps)
       <div className="mt-8">
         <button
           onClick={onOpenModal}
-          className="border border-[#222222] hover:bg-neutral-50 text-[#222222] font-semibold text-base py-3 px-6 rounded-lg transition-colors active:scale-98"
+          className="mt-6 inline-flex items-center justify-center bg-[#F2F2F2] hover:bg-[#EBEBEB] text-[#222222] font-semibold text-base px-6 py-3 rounded-xl transition-colors cursor-pointer"
         >
           Show all 71 amenities
         </button>

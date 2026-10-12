@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
-import { ChevronRight } from "lucide-react";
+import React from "react";
 
 interface DescriptionSectionProps {
   onOpenModal: () => void;
@@ -10,9 +9,6 @@ interface DescriptionSectionProps {
 export default function DescriptionSection({ onOpenModal }: DescriptionSectionProps) {
   return (
     <section className="py-8 border-b border-[#dddddd]">
-      <h3 className="text-[22px] font-semibold text-[#222222] mb-4">
-        About this space
-      </h3>
       <div className="text-base text-[#222222] leading-relaxed space-y-4">
         <p className="font-medium text-neutral-800">
           Welcome to The Aurea – A Luxury Boutique Stay🌿
@@ -28,10 +24,9 @@ export default function DescriptionSection({ onOpenModal }: DescriptionSectionPr
 
       <button
         onClick={onOpenModal}
-        className="mt-4 flex items-center gap-1 font-semibold text-base text-[#222222] underline hover:text-black transition-colors"
+        className="mt-6 inline-flex items-center justify-center bg-[#F2F2F2] hover:bg-[#EBEBEB] text-[#222222] font-semibold text-base px-6 py-3 rounded-xl transition-colors cursor-pointer"
       >
-        <span>Show more</span>
-        <ChevronRight className="w-4 h-4 stroke-[2.5]" />
+        Show more
       </button>
     </section>
   );

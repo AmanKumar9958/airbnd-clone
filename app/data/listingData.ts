@@ -31,7 +31,7 @@ export const LISTING_DATA = {
   id: "1729476134054893611",
   title: "The Aurea | Luxury Boutique Stay | Infinity Pool",
   propertyType: "Entire rental unit",
-  location: "Gurugram, Haryana, India",
+  location: "Gurugram, India",
   neighborhood: "M3M Urbana Premium, Sector 67, Gurugram",
   rating: 5.0,
   reviewsCount: 20,
@@ -210,12 +210,12 @@ Wake up to breathtaking skyline views as you sip your morning coffee at the brea
     {
       title: "Bedroom",
       description: "1 king bed",
-      image: "https://a0.muscache.com/im/pictures/hosting/Hosting-1729476134054893611/original/810da56f-7ce4-4b78-be65-4aee1be5c16c.jpeg",
+      image: "https://a0.muscache.com/im/pictures/hosting/Hosting-1729476134054893611/original/fffd8e76-04a8-4cee-89df-b490d6e29b85.jpeg",
     },
     {
       title: "Living room",
       description: "1 single bed, 1 sofa",
-      image: "https://a0.muscache.com/im/pictures/hosting/Hosting-1729476134054893611/original/26f90a0b-929e-44a3-b7d2-739f2891c02c.jpeg",
+      image: "https://a0.muscache.com/im/pictures/hosting/Hosting-1729476134054893611/original/7775ef82-b7b5-4c9a-b36e-8973cb1fe276.jpeg",
     },
   ],
   previewAmenities: [
