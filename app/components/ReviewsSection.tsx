@@ -19,49 +19,166 @@ export default function ReviewsSection() {
   return (
     <section className="py-12 border-b border-[#dddddd]">
       {/* Big Guest Favourite Header Banner */}
-      <div className="flex flex-col items-center justify-center text-center mb-10">
-        <div className="flex items-center justify-center gap-3">
-          {/* Laurel Branch Left */}
-          <svg viewBox="0 0 32 32" className="w-10 h-14 text-[#222222] fill-current">
-            <path d="M16 2c-2.2 4.5-5.5 9-10 13-3 2.5-4 5.5-4 9 0 6 5 11 11 11 1.5 0 3-.2 4.5-.7-2-2.5-3.5-5.5-4-9-.5-3.5-.5-7 0-10.5.5-3.5 2-7 2.5-9.8z" />
-          </svg>
+      <div className="flex flex-col items-center justify-center text-center pt-2 mb-10">
+        <div className="flex items-center justify-center gap-4 sm:gap-6">
+          {/* Left Laurel Branch */}
+          <img
+            src="/laurel-left.png"
+            alt="Guest favourite laurel left"
+            className="w-16 h-20 sm:w-20 sm:h-24 object-contain select-none"
+          />
 
-          {/* Rating */}
-          <div className="text-[64px] font-extrabold text-[#222222] tracking-tighter leading-none">
+          {/* Center Rating */}
+          <span className="text-[80px] sm:text-[92px] font-bold text-[#222222] tracking-tighter leading-none">
             {rating.toFixed(1)}
-          </div>
+          </span>
 
-          {/* Laurel Branch Right */}
-          <svg viewBox="0 0 32 32" className="w-10 h-14 text-[#222222] fill-current scale-x-[-1]">
-            <path d="M16 2c-2.2 4.5-5.5 9-10 13-3 2.5-4 5.5-4 9 0 6 5 11 11 11 1.5 0 3-.2 4.5-.7-2-2.5-3.5-5.5-4-9-.5-3.5-.5-7 0-10.5.5-3.5 2-7 2.5-9.8z" />
-          </svg>
+          {/* Right Laurel Branch */}
+          <img
+            src="/laurel-right.png"
+            alt="Guest favourite laurel right"
+            className="w-16 h-20 sm:w-20 sm:h-24 object-contain select-none"
+          />
         </div>
 
-        <h3 className="text-[22px] font-bold text-[#222222] mt-2">
+        <h2 className="text-[22px] font-bold text-[#222222] mt-3 tracking-tight">
           Guest favourite
-        </h3>
-        <p className="text-base text-[#717171] mt-1 max-w-[420px]">
-          One of the most loved homes on Airbnb, based on ratings, reviews, and reliability
+        </h2>
+        <p className="text-base sm:text-[17px] text-[#717171] mt-1.5 max-w-[480px] font-normal leading-snug">
+          This home is a guest favourite based on ratings, reviews and reliability
         </p>
+        <button
+          type="button"
+          className="text-sm font-semibold text-[#222222] underline underline-offset-4 mt-2 hover:text-black transition-colors"
+        >
+          How reviews work
+        </button>
       </div>
 
-      {/* Category Breakdown Ratings Bars (2 columns of 3) */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 py-6 border-y border-[#ebebeb] mb-8">
-        {ratingCategories.map((cat, idx) => (
-          <div key={idx} className="flex flex-col justify-between">
-            <span className="text-sm font-semibold text-[#222222]">{cat.label}</span>
-            <div className="mt-2 flex items-center justify-between gap-2">
-              <span className="text-base font-bold text-[#222222]">{cat.score.toFixed(1)}</span>
-              {/* Star or Progress bar */}
-              <div className="w-16 h-1 bg-neutral-200 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-black rounded-full"
-                  style={{ width: `${(cat.score / 5.0) * 100}%` }}
-                />
-              </div>
+      {/* 7-Column Category Breakdown */}
+      <div className="border-t border-[#ebebeb] pt-8 mb-10 overflow-x-auto no-scrollbar">
+        <div className="min-w-[760px] grid grid-cols-7 divide-x divide-[#e5e5e5]">
+          {/* Column 1: Overall rating */}
+          <div className="flex flex-col justify-between h-[115px] pr-4 md:pr-5">
+            <span className="text-sm font-semibold text-[#222222]">Overall rating</span>
+            <div className="space-y-1 w-full max-w-[130px] pt-1">
+              {[
+                { star: 5, fill: "w-full" },
+                { star: 4, fill: "w-0" },
+                { star: 3, fill: "w-0" },
+                { star: 2, fill: "w-0" },
+                { star: 1, fill: "w-0" },
+              ].map((item) => (
+                <div key={item.star} className="flex items-center gap-2">
+                  <span className="text-[11px] font-medium text-[#717171] w-2 text-left">
+                    {item.star}
+                  </span>
+                  <div className="flex-1 h-1 bg-[#e5e5e5] rounded-full overflow-hidden">
+                    <div className={`h-full bg-[#222222] rounded-full ${item.fill}`} />
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        ))}
+
+          {/* Column 2: Cleanliness */}
+          <div className="flex flex-col justify-between h-[115px] px-4 md:px-5">
+            <div>
+              <span className="text-sm font-semibold text-[#222222] block">Cleanliness</span>
+              <span className="text-sm font-semibold text-[#222222] block mt-0.5">4.9</span>
+            </div>
+            <div className="text-[#222222] pb-1">
+              {/* Spray bottle SVG */}
+              <svg viewBox="0 0 32 32" className="w-7 h-7 text-[#222222]" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 15h9v11a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V15z" />
+                <path d="M15 15v-4h3v4" />
+                <path d="M13 8h5a2 2 0 0 1 2 2v1H13V8z" />
+                <path d="M13 9.5H9" />
+                <path d="M17 11.5l-3 3.5" />
+                <circle cx="5.5" cy="8" r="0.8" fill="currentColor" stroke="none" />
+                <circle cx="4" cy="10.5" r="0.8" fill="currentColor" stroke="none" />
+                <circle cx="5.5" cy="13" r="0.8" fill="currentColor" stroke="none" />
+              </svg>
+            </div>
+          </div>
+
+          {/* Column 3: Accuracy */}
+          <div className="flex flex-col justify-between h-[115px] px-4 md:px-5">
+            <div>
+              <span className="text-sm font-semibold text-[#222222] block">Accuracy</span>
+              <span className="text-sm font-semibold text-[#222222] block mt-0.5">5.0</span>
+            </div>
+            <div className="text-[#222222] pb-1">
+              {/* Checkmark in circle SVG */}
+              <svg viewBox="0 0 32 32" className="w-7 h-7 text-[#222222]" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="16" cy="16" r="12" />
+                <path d="M11 16.5l3.5 3.5 7-7" />
+              </svg>
+            </div>
+          </div>
+
+          {/* Column 4: Check-in */}
+          <div className="flex flex-col justify-between h-[115px] px-4 md:px-5">
+            <div>
+              <span className="text-sm font-semibold text-[#222222] block">Check-in</span>
+              <span className="text-sm font-semibold text-[#222222] block mt-0.5">5.0</span>
+            </div>
+            <div className="text-[#222222] pb-1">
+              {/* Key SVG matching Airbnb reference */}
+              <svg viewBox="0 0 32 32" className="w-7 h-7 text-[#222222]" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="21" r="5" />
+                <path d="M14.5 17.5L25 7" />
+                <path d="M21.5 10.5l2 2" />
+                <path d="M24 8l2 2" />
+              </svg>
+            </div>
+          </div>
+
+          {/* Column 5: Communication */}
+          <div className="flex flex-col justify-between h-[115px] px-4 md:px-5">
+            <div>
+              <span className="text-sm font-semibold text-[#222222] block">Communication</span>
+              <span className="text-sm font-semibold text-[#222222] block mt-0.5">5.0</span>
+            </div>
+            <div className="text-[#222222] pb-1">
+              {/* Speech bubble SVG */}
+              <svg viewBox="0 0 32 32" className="w-7 h-7 text-[#222222]" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 8a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v11a3 3 0 0 1-3 3H12l-5 4v-4H9a3 3 0 0 1-3-3V8z" />
+              </svg>
+            </div>
+          </div>
+
+          {/* Column 6: Location */}
+          <div className="flex flex-col justify-between h-[115px] px-4 md:px-5">
+            <div>
+              <span className="text-sm font-semibold text-[#222222] block">Location</span>
+              <span className="text-sm font-semibold text-[#222222] block mt-0.5">5.0</span>
+            </div>
+            <div className="text-[#222222] pb-1">
+              {/* Folded map SVG */}
+              <svg viewBox="0 0 32 32" className="w-7 h-7 text-[#222222]" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 7l7-3 8 3 7-3v21l-7 3-8-3-7 3V7z" />
+                <path d="M12 4v21" />
+                <path d="M20 7v21" />
+              </svg>
+            </div>
+          </div>
+
+          {/* Column 7: Value */}
+          <div className="flex flex-col justify-between h-[115px] pl-4 md:pl-5">
+            <div>
+              <span className="text-sm font-semibold text-[#222222] block">Value</span>
+              <span className="text-sm font-semibold text-[#222222] block mt-0.5">5.0</span>
+            </div>
+            <div className="text-[#222222] pb-1">
+              {/* Price tag SVG */}
+              <svg viewBox="0 0 32 32" className="w-7 h-7 text-[#222222]" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M26 15l-10 10a2 2 0 0 1-2.8 0L4.5 16.3V6h10.3l11.2 9z" />
+                <circle cx="9.5" cy="11" r="1.5" fill="currentColor" stroke="none" />
+              </svg>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Review Filter Tags */}

@@ -58,12 +58,18 @@ export const LISTING_DATA = {
     isVerified: true,
     reviewsCount: 116,
     rating: 4.96,
+    monthsHosting: 7,
     yearsHosting: "7 months",
     responseRate: "100%",
     responseTime: "Responds within an hour",
     work: "IT Professional",
     generation: "Born in the 90s",
-    coHosts: [],
+    coHosts: [
+      {
+        name: "Shivika",
+        avatar: "https://a0.muscache.com/im/pictures/user/User/original/3d3ba782-a284-49a4-a340-5dc1de9718f2.jpeg",
+      },
+    ],
   },
   photos: [
     {
@@ -210,12 +216,12 @@ Wake up to breathtaking skyline views as you sip your morning coffee at the brea
     {
       title: "Bedroom",
       description: "1 king bed",
-      image: "https://a0.muscache.com/im/pictures/hosting/Hosting-1729476134054893611/original/fffd8e76-04a8-4cee-89df-b490d6e29b85.jpeg",
+      image: "/bedroom/1.avif",
     },
     {
       title: "Living room",
       description: "1 single bed, 1 sofa",
-      image: "https://a0.muscache.com/im/pictures/hosting/Hosting-1729476134054893611/original/7775ef82-b7b5-4c9a-b36e-8973cb1fe276.jpeg",
+      image: "/living_room/1.avif",
     },
   ],
   previewAmenities: [

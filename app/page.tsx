@@ -15,6 +15,7 @@ import ReviewsSection from "./components/ReviewsSection";
 import LocationSection from "./components/LocationSection";
 import HostProfileSection from "./components/HostProfileSection";
 import ThingsToKnow from "./components/ThingsToKnow";
+import MoreStaysNearby from "./components/MoreStaysNearby";
 import Footer from "./components/Footer";
 import MobileBookingBar from "./components/MobileBookingBar";
 
@@ -29,14 +30,14 @@ import { LISTING_DATA } from "./data/listingData";
 
 export default function ListingPage() {
   const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
-  const [photoModalIndex, setPhotoModalIndex] = useState(0);
+  const [photoModalSection, setPhotoModalSection] = useState<string>("living-room");
   const [isAmenitiesModalOpen, setIsAmenitiesModalOpen] = useState(false);
   const [isDescriptionModalOpen, setIsDescriptionModalOpen] = useState(false);
   const [isRulesModalOpen, setIsRulesModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
-  const openPhotoModal = (index: number = 0) => {
-    setPhotoModalIndex(index);
+  const openPhotoModal = (sectionId: string = "living-room") => {
+    setPhotoModalSection(sectionId);
     setIsPhotoModalOpen(true);
   };
 
@@ -107,6 +108,9 @@ export default function ListingPage() {
         <ThingsToKnow
           onOpenRulesModal={() => setIsRulesModalOpen(true)}
         />
+
+        {/* Full-Width Section 5: More Stays Nearby */}
+        <MoreStaysNearby />
       </main>
 
       {/* 3. Global Footer */}
@@ -119,8 +123,8 @@ export default function ListingPage() {
       <PhotoModal
         isOpen={isPhotoModalOpen}
         onClose={() => setIsPhotoModalOpen(false)}
-        photos={LISTING_DATA.photos}
-        initialIndex={photoModalIndex}
+        initialSectionId={photoModalSection}
+        onShareClick={() => setIsShareModalOpen(true)}
       />
 
       <AmenitiesModal

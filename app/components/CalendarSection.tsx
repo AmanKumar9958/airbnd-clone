@@ -6,8 +6,8 @@ import { ChevronLeft, ChevronRight, Keyboard } from "lucide-react";
 export default function CalendarSection() {
   // Current visible start month (default: October 2026)
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date(2026, 9, 1));
-  const [checkIn, setCheckIn] = useState<string | null>("2026-10-08");
-  const [checkOut, setCheckOut] = useState<string | null>("2026-10-09");
+  const [checkIn, setCheckIn] = useState<string | null>("2026-10-27");
+  const [checkOut, setCheckOut] = useState<string | null>("2026-10-28");
 
   const weekHeaders = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
@@ -94,6 +94,149 @@ export default function CalendarSection() {
 
   const nights = getNights();
 
+  const renderMonth = (
+    m: ReturnType<typeof getMonthData>,
+    isFirstMonth: boolean
+  ) => {
+    return (
+      <div className="flex-1">
+        <div className="flex items-center justify-between mb-4 h-9">
+          {isFirstMonth ? (
+            <button
+              onClick={handlePrevMonth}
+              className="p-2 -ml-2 rounded-full hover:bg-neutral-100 transition-colors cursor-pointer text-[#222222]"
+              aria-label="Previous month"
+            >
+              <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
+            </button>
+          ) : (
+            <div className="w-9" />
+          )}
+
+          <span className="font-semibold text-base text-[#222222] select-none">
+            {m.monthName} {m.year}
+          </span>
+
+          {isFirstMonth ? (
+            <>
+              <button
+                onClick={handleNextMonth}
+                className="p-2 -mr-2 rounded-full hover:bg-neutral-100 transition-colors cursor-pointer text-[#222222] md:hidden"
+                aria-label="Next month"
+              >
+                <ChevronRight className="w-5 h-5 stroke-[2.5]" />
+              </button>
+              <div className="w-9 hidden md:block" />
+            </>
+          ) : (
+            <button
+              onClick={handleNextMonth}
+              className="p-2 -mr-2 rounded-full hover:bg-neutral-100 transition-colors cursor-pointer text-[#222222]"
+              aria-label="Next month"
+            >
+              <ChevronRight className="w-5 h-5 stroke-[2.5]" />
+            </button>
+          )}
+        </div>
+
+        <div className="grid grid-cols-7 gap-1 text-center text-xs font-semibold text-[#717171] mb-2 select-none">
+          {weekHeaders.map((w, i) => (
+            <div key={i} className="py-1">
+              {w}
+            </div>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-7 gap-y-1 gap-x-0 text-center text-sm">
+          {/* Empty offset days */}
+          {[...Array(m.startDayOfWeek)].map((_, i) => (
+            <div key={`empty-${m.month}-${i}`} className="h-10" />
+          ))}
+
+          {/* Days in Month */}
+          {[...Array(m.daysInMonth)].map((_, i) => {
+            const day = i + 1;
+            const dateKey = formatDateKey(m.year, m.month, day);
+            const isStart = dateKey === checkIn;
+            const isEnd = dateKey === checkOut;
+            const isInRange =
+              checkIn && checkOut && dateKey > checkIn && dateKey < checkOut;
+
+            let buttonClasses =
+              "h-10 w-full flex items-center justify-center text-sm font-medium transition-all cursor-pointer ";
+            let containerClasses = "";
+
+            if (isStart && checkOut) {
+              containerClasses = "bg-neutral-100 rounded-l-full";
+              buttonClasses += "bg-black text-white font-semibold rounded-full group-hover:ring-2 group-hover:ring-black group-hover:ring-offset-2 group-hover:ring-offset-white";
+            } else if (isEnd && checkIn) {
+              containerClasses = "bg-neutral-100 rounded-r-full";
+              buttonClasses += "bg-black text-white font-semibold rounded-full group-hover:ring-2 group-hover:ring-black group-hover:ring-offset-2 group-hover:ring-offset-white";
+            } else if (isStart && !checkOut) {
+              buttonClasses += "bg-black text-white font-semibold rounded-full group-hover:ring-2 group-hover:ring-black group-hover:ring-offset-2 group-hover:ring-offset-white";
+            } else if (isInRange) {
+              containerClasses = "bg-neutral-100";
+              buttonClasses += "text-[#222222] hover:bg-neutral-200 rounded-full";
+            } else {
+              buttonClasses +=
+                "text-[#222222] hover:border-black border border-transparent rounded-full";
+            }
+
+            return (
+              <div
+                key={dateKey}
+                className={`group relative ${containerClasses} hover:z-40 z-10`}
+              >
+                {/* Check-in Tooltip */}
+                {isStart && (
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-40 pointer-events-none whitespace-nowrap hidden group-hover:flex flex-col items-center transition-all duration-150">
+                    <div className="bg-white text-[#222222] text-[13px] font-normal px-2.5 py-1 rounded-md shadow-[0_2px_8px_rgba(0,0,0,0.15)] border border-[#e4e4e4]">
+                      Check-in day
+                    </div>
+                    <div
+                      className="bg-white border-r border-b border-[#e4e4e4]"
+                      style={{
+                        marginTop: "-5px",
+                        width: "8px",
+                        height: "8px",
+                        transform: "rotate(45deg)",
+                      }}
+                    />
+                  </div>
+                )}
+
+                {/* Checkout Tooltip */}
+                {isEnd && (
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-40 pointer-events-none whitespace-nowrap hidden group-hover:flex flex-col items-center transition-all duration-150">
+                    <div className="bg-white text-[#222222] text-[13px] font-normal px-2.5 py-1 rounded-md shadow-[0_2px_8px_rgba(0,0,0,0.15)] border border-[#e4e4e4]">
+                      Checkout day
+                    </div>
+                    <div
+                      className="bg-white border-r border-b border-[#e4e4e4]"
+                      style={{
+                        marginTop: "-5px",
+                        width: "8px",
+                        height: "8px",
+                        transform: "rotate(45deg)",
+                      }}
+                    />
+                  </div>
+                )}
+
+                <button
+                  onClick={() => handleDateClick(dateKey)}
+                  className={buttonClasses}
+                >
+                  {day}
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <section className="py-8 border-b border-[#dddddd]">
       <div>
@@ -116,156 +259,11 @@ export default function CalendarSection() {
       {/* Side-by-Side Dual Month Calendar */}
       <div className="mt-6 flex flex-col md:flex-row gap-8 max-w-[700px]">
         {/* Month 1 */}
-        <div className="flex-1">
-          <div className="flex items-center justify-between mb-4 h-9">
-            <button
-              onClick={handlePrevMonth}
-              className="p-2 -ml-2 rounded-full hover:bg-neutral-100 transition-colors cursor-pointer text-[#222222]"
-              aria-label="Previous month"
-            >
-              <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
-            </button>
-            <span className="font-semibold text-base text-[#222222] select-none">
-              {month1.monthName} {month1.year}
-            </span>
-            <button
-              onClick={handleNextMonth}
-              className="p-2 -mr-2 rounded-full hover:bg-neutral-100 transition-colors cursor-pointer text-[#222222] md:hidden"
-              aria-label="Next month"
-            >
-              <ChevronRight className="w-5 h-5 stroke-[2.5]" />
-            </button>
-            <div className="w-9 hidden md:block" />
-          </div>
-
-          <div className="grid grid-cols-7 gap-1 text-center text-xs font-semibold text-[#717171] mb-2 select-none">
-            {weekHeaders.map((w, i) => (
-              <div key={i} className="py-1">
-                {w}
-              </div>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-7 gap-y-1 gap-x-0 text-center text-sm">
-            {/* Empty offset days */}
-            {[...Array(month1.startDayOfWeek)].map((_, i) => (
-              <div key={`empty-m1-${i}`} className="h-10" />
-            ))}
-
-            {/* Days in Month 1 */}
-            {[...Array(month1.daysInMonth)].map((_, i) => {
-              const day = i + 1;
-              const dateKey = formatDateKey(month1.year, month1.month, day);
-              const isStart = dateKey === checkIn;
-              const isEnd = dateKey === checkOut;
-              const isInRange =
-                checkIn && checkOut && dateKey > checkIn && dateKey < checkOut;
-
-              let buttonClasses =
-                "h-10 w-full flex items-center justify-center text-sm font-medium transition-colors cursor-pointer ";
-              let containerClasses = "relative ";
-
-              if (isStart && checkOut) {
-                containerClasses += "bg-neutral-100 rounded-l-full";
-                buttonClasses += "bg-black text-white font-semibold rounded-full";
-              } else if (isEnd && checkIn) {
-                containerClasses += "bg-neutral-100 rounded-r-full";
-                buttonClasses += "bg-black text-white font-semibold rounded-full";
-              } else if (isStart && !checkOut) {
-                buttonClasses += "bg-black text-white font-semibold rounded-full";
-              } else if (isInRange) {
-                containerClasses += "bg-neutral-100";
-                buttonClasses += "text-[#222222] hover:bg-neutral-200 rounded-full";
-              } else {
-                buttonClasses +=
-                  "text-[#222222] hover:border-black border border-transparent rounded-full";
-              }
-
-              return (
-                <div key={dateKey} className={containerClasses}>
-                  <button
-                    onClick={() => handleDateClick(dateKey)}
-                    className={buttonClasses}
-                  >
-                    {day}
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        {renderMonth(month1, true)}
 
         {/* Month 2 (Desktop view) */}
         <div className="flex-1 hidden md:block">
-          <div className="flex items-center justify-between mb-4 h-9">
-            <div className="w-9" />
-            <span className="font-semibold text-base text-[#222222] select-none">
-              {month2.monthName} {month2.year}
-            </span>
-            <button
-              onClick={handleNextMonth}
-              className="p-2 -mr-2 rounded-full hover:bg-neutral-100 transition-colors cursor-pointer text-[#222222]"
-              aria-label="Next month"
-            >
-              <ChevronRight className="w-5 h-5 stroke-[2.5]" />
-            </button>
-          </div>
-
-          <div className="grid grid-cols-7 gap-1 text-center text-xs font-semibold text-[#717171] mb-2 select-none">
-            {weekHeaders.map((w, i) => (
-              <div key={i} className="py-1">
-                {w}
-              </div>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-7 gap-y-1 gap-x-0 text-center text-sm">
-            {/* Empty offset days */}
-            {[...Array(month2.startDayOfWeek)].map((_, i) => (
-              <div key={`empty-m2-${i}`} className="h-10" />
-            ))}
-
-            {/* Days in Month 2 */}
-            {[...Array(month2.daysInMonth)].map((_, i) => {
-              const day = i + 1;
-              const dateKey = formatDateKey(month2.year, month2.month, day);
-              const isStart = dateKey === checkIn;
-              const isEnd = dateKey === checkOut;
-              const isInRange =
-                checkIn && checkOut && dateKey > checkIn && dateKey < checkOut;
-
-              let buttonClasses =
-                "h-10 w-full flex items-center justify-center text-sm font-medium transition-colors cursor-pointer ";
-              let containerClasses = "relative ";
-
-              if (isStart && checkOut) {
-                containerClasses += "bg-neutral-100 rounded-l-full";
-                buttonClasses += "bg-black text-white font-semibold rounded-full";
-              } else if (isEnd && checkIn) {
-                containerClasses += "bg-neutral-100 rounded-r-full";
-                buttonClasses += "bg-black text-white font-semibold rounded-full";
-              } else if (isStart && !checkOut) {
-                buttonClasses += "bg-black text-white font-semibold rounded-full";
-              } else if (isInRange) {
-                containerClasses += "bg-neutral-100";
-                buttonClasses += "text-[#222222] hover:bg-neutral-200 rounded-full";
-              } else {
-                buttonClasses +=
-                  "text-[#222222] hover:border-black border border-transparent rounded-full";
-              }
-
-              return (
-                <div key={dateKey} className={containerClasses}>
-                  <button
-                    onClick={() => handleDateClick(dateKey)}
-                    className={buttonClasses}
-                  >
-                    {day}
-                  </button>
-                </div>
-              );
-            })}
-          </div>
+          {renderMonth(month2, false)}
         </div>
       </div>
 

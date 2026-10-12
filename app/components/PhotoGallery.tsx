@@ -6,7 +6,7 @@ import { PhotoItem } from "../data/listingData";
 interface PhotoGalleryProps {
   photos: PhotoItem[];
   totalPhotosCount?: number;
-  onOpenModal: (initialIndex?: number) => void;
+  onOpenModal: (sectionId?: string) => void;
 }
 
 export default function PhotoGallery({
@@ -41,7 +41,7 @@ export default function PhotoGallery({
       <div className="hidden sm:grid grid-cols-4 grid-rows-2 gap-2 h-[280px] sm:h-[320px] md:h-[355px] lg:h-[380px]">
         {/* 1. Main Large Photo (Left: col 1-2, row 1-2) */}
         <div
-          onClick={() => onOpenModal(0)}
+          onClick={() => onOpenModal("living-room")}
           className="col-start-1 col-end-3 row-start-1 row-end-3 relative cursor-pointer overflow-hidden group bg-neutral-100"
         >
           <img
@@ -54,7 +54,7 @@ export default function PhotoGallery({
 
         {/* 2. Top-Middle (col 3, row 1): Living room overview */}
         <div
-          onClick={() => onOpenModal(8)}
+          onClick={() => onOpenModal("living-room")}
           className="col-start-3 col-end-4 row-start-1 row-end-2 relative cursor-pointer overflow-hidden group bg-neutral-100"
         >
           <img
@@ -67,7 +67,7 @@ export default function PhotoGallery({
 
         {/* 3. Bottom-Middle (col 3, row 2): TV console view */}
         <div
-          onClick={() => onOpenModal(13)}
+          onClick={() => onOpenModal("living-room")}
           className="col-start-3 col-end-4 row-start-2 row-end-3 relative cursor-pointer overflow-hidden group bg-neutral-100"
         >
           <img
@@ -80,7 +80,7 @@ export default function PhotoGallery({
 
         {/* 4. Top-Right (col 4, row 1): Balcony night view with wine glasses */}
         <div
-          onClick={() => onOpenModal(4)}
+          onClick={() => onOpenModal("kitchen")}
           className="col-start-4 col-end-5 row-start-1 row-end-2 relative cursor-pointer overflow-hidden group bg-neutral-100"
         >
           <img
@@ -93,7 +93,7 @@ export default function PhotoGallery({
 
         {/* 5. Bottom-Right (col 4, row 2): Master bedroom suite */}
         <div
-          onClick={() => onOpenModal(1)}
+          onClick={() => onOpenModal("bedroom")}
           className="col-start-4 col-end-5 row-start-2 row-end-3 relative cursor-pointer overflow-hidden group bg-neutral-100"
         >
           <img
@@ -107,7 +107,7 @@ export default function PhotoGallery({
 
       {/* Mobile single image banner */}
       <div
-        onClick={() => onOpenModal(0)}
+        onClick={() => onOpenModal("living-room")}
         className="sm:hidden relative h-[250px] w-full cursor-pointer"
       >
         <img
@@ -122,19 +122,19 @@ export default function PhotoGallery({
 
       {/* "Show all photos" Button at Bottom Right */}
       <button
-        onClick={() => onOpenModal(0)}
+        onClick={() => onOpenModal()}
         className="absolute bottom-4 right-4 hidden sm:flex items-center gap-2 bg-white text-[#222222] border border-black hover:bg-neutral-50 px-3.5 py-1.5 rounded-lg text-xs font-semibold shadow-xs transition-all active:scale-95 z-10"
       >
         {/* 3x3 dots icon */}
         <svg viewBox="0 0 16 16" className="w-3.5 h-3.5 fill-current">
           <circle cx="3" cy="3" r="1.5" />
-          <circle cx="8" cy="3" r="1.5" />
+          <circle cx="8" cy="2" r="1.5" />
           <circle cx="13" cy="3" r="1.5" />
           <circle cx="3" cy="8" r="1.5" />
           <circle cx="8" cy="8" r="1.5" />
           <circle cx="13" cy="8" r="1.5" />
           <circle cx="3" cy="13" r="1.5" />
-          <circle cx="8" cy="13" r="1.5" />
+          <circle cx="8" cy="14" r="1.5" />
           <circle cx="13" cy="13" r="1.5" />
         </svg>
         <span>Show all photos</span>
