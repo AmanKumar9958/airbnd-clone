@@ -12,7 +12,7 @@ interface HouseRulesModalProps {
 export default function HouseRulesModal({ isOpen, onClose }: HouseRulesModalProps) {
   if (!isOpen) return null;
 
-  const { houseRules, additionalRules } = LISTING_DATA;
+  const { additionalRules } = LISTING_DATA;
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200">

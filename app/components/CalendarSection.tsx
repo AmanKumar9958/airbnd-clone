@@ -4,28 +4,66 @@ import React, { useState } from "react";
 import { ChevronLeft, ChevronRight, Keyboard } from "lucide-react";
 
 export default function CalendarSection() {
-  const [checkIn, setCheckIn] = useState<number | null>(8);
-  const [checkOut, setCheckOut] = useState<number | null>(9);
-
-  // October 2026 starts on Thursday (day index 4: Sun 0, Mon 1, Tue 2, Wed 3, Thu 4)
-  const daysInOct = 31;
-  const startDayOct = 4; // Thu
-
-  // November 2026 starts on Sunday (day index 0)
-  const daysInNov = 30;
-  const startDayNov = 0; // Sun
+  // Current visible start month (default: October 2026)
+  const [currentMonth, setCurrentMonth] = useState<Date>(new Date(2026, 9, 1));
+  const [checkIn, setCheckIn] = useState<string | null>("2026-10-08");
+  const [checkOut, setCheckOut] = useState<string | null>("2026-10-09");
 
   const weekHeaders = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
-  const handleDateClick = (day: number) => {
+  const handlePrevMonth = () => {
+    setCurrentMonth(
+      (prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1)
+    );
+  };
+
+  const handleNextMonth = () => {
+    setCurrentMonth(
+      (prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1)
+    );
+  };
+
+  const getMonthData = (date: Date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const firstDay = new Date(year, month, 1);
+    const startDayOfWeek = firstDay.getDay(); // 0 for Sunday
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const monthName = firstDay.toLocaleString("en-US", { month: "long" });
+    return {
+      year,
+      month,
+      monthName,
+      startDayOfWeek,
+      daysInMonth,
+    };
+  };
+
+  const month1 = getMonthData(currentMonth);
+  const month2Date = new Date(
+    currentMonth.getFullYear(),
+    currentMonth.getMonth() + 1,
+    1
+  );
+  const month2 = getMonthData(month2Date);
+
+  const formatDateKey = (year: number, month: number, day: number) => {
+    const m = String(month + 1).padStart(2, "0");
+    const d = String(day).padStart(2, "0");
+    return `${year}-${m}-${d}`;
+  };
+
+  const handleDateClick = (dateStr: string) => {
     if (!checkIn || (checkIn && checkOut)) {
-      setCheckIn(day);
+      setCheckIn(dateStr);
       setCheckOut(null);
     } else if (checkIn && !checkOut) {
-      if (day > checkIn) {
-        setCheckOut(day);
+      if (dateStr > checkIn) {
+        setCheckOut(dateStr);
+      } else if (dateStr < checkIn) {
+        setCheckIn(dateStr);
       } else {
-        setCheckIn(day);
+        setCheckOut(null);
       }
     }
   };
@@ -35,34 +73,72 @@ export default function CalendarSection() {
     setCheckOut(null);
   };
 
+  const getNights = () => {
+    if (!checkIn || !checkOut) return 0;
+    const d1 = new Date(checkIn);
+    const d2 = new Date(checkOut);
+    return Math.round(
+      Math.abs(d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24)
+    );
+  };
+
+  const formatDisplayDate = (dateStr: string) => {
+    const [y, m, d] = dateStr.split("-").map(Number);
+    const date = new Date(y, m - 1, d);
+    return date.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
+  const nights = getNights();
+
   return (
     <section className="py-8 border-b border-[#dddddd]">
       <div>
         <h3 className="text-[22px] font-semibold text-[#222222]">
           {checkIn && checkOut
-            ? `${checkOut - checkIn} night in Gurugram`
+            ? `${nights} night${nights > 1 ? "s" : ""} in Gurugram`
+            : checkIn
+            ? "Select checkout date"
             : "Select check-in date"}
         </h3>
         <p className="text-sm text-[#717171] mt-1">
           {checkIn && checkOut
-            ? `${checkIn} Oct 2026 – ${checkOut} Oct 2026`
+            ? `${formatDisplayDate(checkIn)} – ${formatDisplayDate(checkOut)}`
+            : checkIn
+            ? "Minimum stay: 1 night"
             : "Add your travel dates for exact pricing"}
         </p>
       </div>
 
       {/* Side-by-Side Dual Month Calendar */}
       <div className="mt-6 flex flex-col md:flex-row gap-8 max-w-[700px]">
-        {/* Month 1: October 2026 */}
+        {/* Month 1 */}
         <div className="flex-1">
-          <div className="flex items-center justify-between mb-4">
-            <button className="p-1 rounded-full hover:bg-neutral-100 transition-colors">
-              <ChevronLeft className="w-5 h-5 text-[#222222]" />
+          <div className="flex items-center justify-between mb-4 h-9">
+            <button
+              onClick={handlePrevMonth}
+              className="p-2 -ml-2 rounded-full hover:bg-neutral-100 transition-colors cursor-pointer text-[#222222]"
+              aria-label="Previous month"
+            >
+              <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
             </button>
-            <span className="font-semibold text-base text-[#222222]">October 2026</span>
-            <div className="w-5 md:hidden" />
+            <span className="font-semibold text-base text-[#222222] select-none">
+              {month1.monthName} {month1.year}
+            </span>
+            <button
+              onClick={handleNextMonth}
+              className="p-2 -mr-2 rounded-full hover:bg-neutral-100 transition-colors cursor-pointer text-[#222222] md:hidden"
+              aria-label="Next month"
+            >
+              <ChevronRight className="w-5 h-5 stroke-[2.5]" />
+            </button>
+            <div className="w-9 hidden md:block" />
           </div>
 
-          <div className="grid grid-cols-7 gap-1 text-center text-xs font-semibold text-[#717171] mb-2">
+          <div className="grid grid-cols-7 gap-1 text-center text-xs font-semibold text-[#717171] mb-2 select-none">
             {weekHeaders.map((w, i) => (
               <div key={i} className="py-1">
                 {w}
@@ -70,52 +146,72 @@ export default function CalendarSection() {
             ))}
           </div>
 
-          <div className="grid grid-cols-7 gap-1 text-center text-sm">
+          <div className="grid grid-cols-7 gap-y-1 gap-x-0 text-center text-sm">
             {/* Empty offset days */}
-            {[...Array(startDayOct)].map((_, i) => (
-              <div key={`empty-oct-${i}`} className="h-10" />
+            {[...Array(month1.startDayOfWeek)].map((_, i) => (
+              <div key={`empty-m1-${i}`} className="h-10" />
             ))}
 
-            {/* Days in Oct */}
-            {[...Array(daysInOct)].map((_, i) => {
+            {/* Days in Month 1 */}
+            {[...Array(month1.daysInMonth)].map((_, i) => {
               const day = i + 1;
-              const isSelectedStart = day === checkIn;
-              const isSelectedEnd = day === checkOut;
-              const isInRange = checkIn && checkOut && day > checkIn && day < checkOut;
+              const dateKey = formatDateKey(month1.year, month1.month, day);
+              const isStart = dateKey === checkIn;
+              const isEnd = dateKey === checkOut;
+              const isInRange =
+                checkIn && checkOut && dateKey > checkIn && dateKey < checkOut;
 
-              let style = "text-[#222222] hover:border-black border border-transparent";
-              if (isSelectedStart) {
-                style = "bg-black text-white font-semibold rounded-l-full";
-              } else if (isSelectedEnd) {
-                style = "bg-black text-white font-semibold rounded-r-full";
+              let buttonClasses =
+                "h-10 w-full flex items-center justify-center text-sm font-medium transition-colors cursor-pointer ";
+              let containerClasses = "relative ";
+
+              if (isStart && checkOut) {
+                containerClasses += "bg-neutral-100 rounded-l-full";
+                buttonClasses += "bg-black text-white font-semibold rounded-full";
+              } else if (isEnd && checkIn) {
+                containerClasses += "bg-neutral-100 rounded-r-full";
+                buttonClasses += "bg-black text-white font-semibold rounded-full";
+              } else if (isStart && !checkOut) {
+                buttonClasses += "bg-black text-white font-semibold rounded-full";
               } else if (isInRange) {
-                style = "bg-neutral-100 text-black";
+                containerClasses += "bg-neutral-100";
+                buttonClasses += "text-[#222222] hover:bg-neutral-200 rounded-full";
+              } else {
+                buttonClasses +=
+                  "text-[#222222] hover:border-black border border-transparent rounded-full";
               }
 
               return (
-                <button
-                  key={`oct-${day}`}
-                  onClick={() => handleDateClick(day)}
-                  className={`h-10 w-full flex items-center justify-center rounded-full text-sm font-medium transition-colors ${style}`}
-                >
-                  {day}
-                </button>
+                <div key={dateKey} className={containerClasses}>
+                  <button
+                    onClick={() => handleDateClick(dateKey)}
+                    className={buttonClasses}
+                  >
+                    {day}
+                  </button>
+                </div>
               );
             })}
           </div>
         </div>
 
-        {/* Month 2: November 2026 */}
+        {/* Month 2 (Desktop view) */}
         <div className="flex-1 hidden md:block">
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-5" />
-            <span className="font-semibold text-base text-[#222222]">November 2026</span>
-            <button className="p-1 rounded-full hover:bg-neutral-100 transition-colors">
-              <ChevronRight className="w-5 h-5 text-[#222222]" />
+          <div className="flex items-center justify-between mb-4 h-9">
+            <div className="w-9" />
+            <span className="font-semibold text-base text-[#222222] select-none">
+              {month2.monthName} {month2.year}
+            </span>
+            <button
+              onClick={handleNextMonth}
+              className="p-2 -mr-2 rounded-full hover:bg-neutral-100 transition-colors cursor-pointer text-[#222222]"
+              aria-label="Next month"
+            >
+              <ChevronRight className="w-5 h-5 stroke-[2.5]" />
             </button>
           </div>
 
-          <div className="grid grid-cols-7 gap-1 text-center text-xs font-semibold text-[#717171] mb-2">
+          <div className="grid grid-cols-7 gap-1 text-center text-xs font-semibold text-[#717171] mb-2 select-none">
             {weekHeaders.map((w, i) => (
               <div key={i} className="py-1">
                 {w}
@@ -123,22 +219,50 @@ export default function CalendarSection() {
             ))}
           </div>
 
-          <div className="grid grid-cols-7 gap-1 text-center text-sm">
-            {/* Empty offset days for Nov */}
-            {[...Array(startDayNov)].map((_, i) => (
-              <div key={`empty-nov-${i}`} className="h-10" />
+          <div className="grid grid-cols-7 gap-y-1 gap-x-0 text-center text-sm">
+            {/* Empty offset days */}
+            {[...Array(month2.startDayOfWeek)].map((_, i) => (
+              <div key={`empty-m2-${i}`} className="h-10" />
             ))}
 
-            {/* Days in Nov */}
-            {[...Array(daysInNov)].map((_, i) => {
+            {/* Days in Month 2 */}
+            {[...Array(month2.daysInMonth)].map((_, i) => {
               const day = i + 1;
+              const dateKey = formatDateKey(month2.year, month2.month, day);
+              const isStart = dateKey === checkIn;
+              const isEnd = dateKey === checkOut;
+              const isInRange =
+                checkIn && checkOut && dateKey > checkIn && dateKey < checkOut;
+
+              let buttonClasses =
+                "h-10 w-full flex items-center justify-center text-sm font-medium transition-colors cursor-pointer ";
+              let containerClasses = "relative ";
+
+              if (isStart && checkOut) {
+                containerClasses += "bg-neutral-100 rounded-l-full";
+                buttonClasses += "bg-black text-white font-semibold rounded-full";
+              } else if (isEnd && checkIn) {
+                containerClasses += "bg-neutral-100 rounded-r-full";
+                buttonClasses += "bg-black text-white font-semibold rounded-full";
+              } else if (isStart && !checkOut) {
+                buttonClasses += "bg-black text-white font-semibold rounded-full";
+              } else if (isInRange) {
+                containerClasses += "bg-neutral-100";
+                buttonClasses += "text-[#222222] hover:bg-neutral-200 rounded-full";
+              } else {
+                buttonClasses +=
+                  "text-[#222222] hover:border-black border border-transparent rounded-full";
+              }
+
               return (
-                <button
-                  key={`nov-${day}`}
-                  className="h-10 w-full flex items-center justify-center rounded-full text-sm font-medium text-[#222222] hover:border-black border border-transparent transition-colors"
-                >
-                  {day}
-                </button>
+                <div key={dateKey} className={containerClasses}>
+                  <button
+                    onClick={() => handleDateClick(dateKey)}
+                    className={buttonClasses}
+                  >
+                    {day}
+                  </button>
+                </div>
               );
             })}
           </div>
@@ -147,12 +271,15 @@ export default function CalendarSection() {
 
       {/* Calendar footer controls */}
       <div className="mt-4 flex items-center justify-between text-sm">
-        <button className="p-2 hover:bg-neutral-100 rounded-full transition-colors text-neutral-600">
+        <button
+          className="p-2 hover:bg-neutral-100 rounded-full transition-colors text-neutral-600"
+          aria-label="Keyboard shortcuts"
+        >
           <Keyboard className="w-5 h-5" />
         </button>
         <button
           onClick={clearDates}
-          className="font-semibold text-[#222222] underline hover:text-black py-1 px-2 rounded-md"
+          className="font-semibold text-[#222222] underline hover:text-black py-1 px-2 rounded-md cursor-pointer"
         >
           Clear dates
         </button>

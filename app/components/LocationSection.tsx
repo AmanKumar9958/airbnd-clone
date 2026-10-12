@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Search, Maximize2, Home, Utensils, Compass } from "lucide-react";
+import { Search, Maximize2, Home } from "lucide-react";
 import { LISTING_DATA } from "../data/listingData";
 
 export default function LocationSection() {

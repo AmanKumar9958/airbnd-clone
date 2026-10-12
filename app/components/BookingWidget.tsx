@@ -84,8 +84,12 @@ export default function BookingWidget() {
   return (
     <aside className="w-full sticky top-24 self-start">
       {/* 1. Top Banner: Prices include all fees */}
-      <div className="bg-white border border-[#dddddd] rounded-2xl py-4 px-6 shadow-[0_2px_8px_rgba(0,0,0,0.06)] flex items-center justify-center gap-2.5 mb-6">
-        <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0" fill="none">
+      <div className="group bg-white border border-[#dddddd] hover:border-[#b0b0b0] hover:shadow-[0_4px_14px_rgba(0,0,0,0.08)] transition-all duration-300 rounded-2xl py-4 px-6 shadow-[0_2px_8px_rgba(0,0,0,0.06)] flex items-center justify-center gap-2.5 mb-6 cursor-pointer select-none">
+        <svg
+          viewBox="0 0 24 24"
+          className="w-5 h-5 shrink-0 overflow-visible animate-tag-swing"
+          fill="none"
+        >
           <path
             d="M4.5 4.5L2 2"
             stroke="#b0b0b0"

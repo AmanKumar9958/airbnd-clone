@@ -10,7 +10,7 @@ interface PhotoGalleryProps {
 }
 
 export default function PhotoGallery({
-  photos,
+  photos: _photos,
   totalPhotosCount = 76,
   onOpenModal,
 }: PhotoGalleryProps) {
