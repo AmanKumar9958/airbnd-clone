@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #222222;
+  --airbnb-brand: #ff385c;
+  --airbnb-brand-hover: #e00b41;
+  --airbnb-border: #dddddd;
+  --airbnb-subtext: #717171;
+}
+
+body {
+  background-color: #ffffff;
+  color: #222222;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth transitions */
+* {
+  box-sizing: border-box;
+}
+
+/* Custom Airbnb button gradient */
+.airbnb-btn-gradient {
+  background: radial-gradient(circle, rgba(255, 56, 92, 1) 0%, rgba(224, 11, 65, 1) 50%, rgba(215, 4, 102, 1) 100%);
+  background-size: 200% 200%;
+  transition: all 0.25s ease;
+}
+
+.airbnb-btn-gradient:hover {
+  background-position: right center;
+  box-shadow: 0 4px 12px rgba(224, 11, 65, 0.35);
+}
+
+/* Hide scrollbars when desired */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
